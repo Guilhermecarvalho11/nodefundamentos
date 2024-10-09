@@ -1,9 +1,13 @@
+import { table } from "console";
 import fastify from "fastify";
+import { knexDB } from "./database";
 
 const app = fastify();
 
-app.get("/hello", () => {
-  return "hello word";
+app.get("/hello", async () => {
+  const test = await knexDB("sqlite_schema").select("*");
+
+  return test;
 });
 
 app
