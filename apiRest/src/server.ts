@@ -1,25 +1,16 @@
-import { table } from "console";
 import fastify from "fastify";
-import { knexDB } from "./database";
-import { title } from "process";
+import { transitionsRoutes } from "./routes/transitions";
+import { env } from "./env";
 
 const app = fastify();
 
-app.get("/hello", async () => {
-  const transitions = await knexDB("transactions")
-    .insert({
-      id: crypto.randomUUID(),
-      title: "transação teste",
-      amount: 1650,
-    })
-    .returning("*");
-
-  return transitions;
+app.register(transitionsRoutes, {
+  prefix: "transactions",
 });
 
 app
   .listen({
-    port: 3333,
+    port: env.PORT,
   })
   .then(function () {
     console.log("HTTP Server Running");
